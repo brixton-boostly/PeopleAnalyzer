@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager View v3</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f4f4f6;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1a1a1a;
+    padding: 24px;
+  }
+  h2 { font-size: 15px; color: #555; font-weight: 500; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #999; margin-bottom: 20px; }
+
+  .shell {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  }
+
+  /* Topbar */
+  .topbar {
+    background: #fff;
+    border-bottom: 1px solid #ebebeb;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 10px; }
+  .logo-placeholder {
+    width: 32px; height: 32px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-placeholder svg { width: 22px; height: 22px; }
+  .topbar-title { font-weight: 700; font-size: 15px; color: #1a1a1a; }
+  .cycle-badge {
+    background: #f0e8ff;
+    color: #7B2FBE;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .topbar-user { font-size: 12px; color: #aaa; }
+
+  /* Body layout */
+  .body { display: flex; min-height: 420px; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 185px;
+    min-width: 185px;
+    background: #fafafa;
+    border-right: 1px solid #ebebeb;
+    padding: 16px 12px;
+  }
+  .sidebar-label {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: #bbb; margin-bottom: 10px; padding: 0 4px;
+  }
+  .emp-chip {
+    border-radius: 8px; padding: 8px 10px; margin-bottom: 6px;
+    cursor: pointer; border: 1.5px solid #e8e8e8; background: #fff;
+  }
+  .emp-chip.selected { background: #f0e8ff; border-color: #c084fc; }
+  .emp-chip.placed   { background: #f5fff5; border-color: #86efac; }
+  .emp-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+  .emp-chip.selected .emp-name { color: #7B2FBE; }
+  .emp-chip.placed   .emp-name { color: #16a34a; font-size: 12px; }
+  .emp-role { font-size: 11px; color: #bbb; margin-top: 1px; }
+
+  /* Grid */
+  .grid-area { flex: 1; padding: 20px; }
+
+  .axis-col { display: flex; gap: 8px; align-items: stretch; }
+  .y-label {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-size: 11px; color: #aaa; text-align: center;
+    letter-spacing: 0.06em; min-width: 14px;
+    font-weight: 600; text-transform: uppercase;
+  }
+  .grid-inner { flex: 1; }
+  .col-headers { display: flex; gap: 4px; margin-left: 80px; margin-bottom: 4px; }
+  .col-header { flex: 1; text-align: center; font-size: 11px; color: #aaa; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .grid-rows { display: flex; flex-direction: column; gap: 4px; }
+  .grid-row { display: flex; gap: 4px; align-items: stretch; }
+  .row-label {
+    width: 76px; min-width: 76px;
+    text-align: right; padding-right: 8px;
+    font-size: 11px; color: #aaa; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    display: flex; align-items: center; justify-content: flex-end;
+  }
+
+  .cell {
+    flex: 1; min-height: 100px;
+    border-radius: 8px; padding: 10px;
+    cursor: pointer; border: 1.5px solid transparent;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+  .cell:hover { border-color: #a855f7 !important; }
+  .cell.drop-hint { border: 2px dashed #a855f7 !important; }
+
+  /* Cell colors based on position */
+  .cell-superstar      { background: #d1fae5; } /* High Perf, High Pot - green */
+  .cell-rising-star    { background: #fef9c3; } /* Med Perf, High Pot - yellow */
+  .cell-rough-diamond  { background: #fce7f3; } /* Low Perf, High Pot - pink */
+  .cell-key-player     { background: #dcfce7; } /* High Perf, Med Pot - light green */
+  .cell-core-player    { background: #eff6ff; } /* Med Perf, Med Pot - blue */
+  .cell-inconsistent   { background: #fff1f2; } /* Low Perf, Med Pot - light red */
+  .cell-trusted-pro    { background: #e0f2fe; } /* High Perf, Low Pot - light blue */
+  .cell-workhorse      { background: #f0fdf4; } /* Med Perf, Low Pot - mint */
+  .cell-question-mark  { background: #fef2f2; } /* Low Perf, Low Pot - soft red */
+
+  .cell-title { font-size: 12px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
+  .cell-desc  { font-size: 10px; color: #888; margin-bottom: 8px; line-height: 1.3; }
+  .cell-names { display: flex; flex-wrap: wrap; gap: 4px; }
+
+  .name-tag {
+    background: #ede9fe; color: #7B2FBE;
+    border-radius: 20px; padding: 3px 9px;
+    font-size: 11px; font-weight: 600;
+    white-space: nowrap;
+  }
+  .drop-text { font-size: 11px; color: #a855f7; font-style: italic; }
+
+  .x-label {
+    text-align: center; font-size: 11px;
+    color: #aaa; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-top: 8px; margin-left: 80px;
+  }
+
+  /* Footer */
+  .footer {
+    background: #fafafa; border-top: 1px solid #ebebeb;
+    padding: 12px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .progress { font-size: 13px; color: #999; }
+  .progress strong { color: #7B2FBE; }
+  .submit-btn {
+    background: #e8e0f5; color: #b09cc8;
+    border: none; border-radius: 8px;
+    padding: 9px 24px; font-size: 13px; font-weight: 700;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body>
+
+<h2>Manager View — 9-Box</h2>
+<p class="subtitle">Alex Rivera is selected — click a cell to place them</p>
+
+<div class="shell">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo-placeholder">
+        <!-- Boostly logo placeholder — replace with <img> once file is added -->
+        <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="22" height="22" rx="4" fill="#7B2FBE"/>
+          <text x="11" y="16" text-anchor="middle" font-family="-apple-system,sans-serif" font-weight="800" font-size="13" fill="white">B</text>
+        </svg>
+      </div>
+      <span class="topbar-title">People Analyzer</span>
+      <span class="cycle-badge">Q2 2025</span>
+    </div>
+    <span class="topbar-user">Jamie Chen</span>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-label">Your Team (5)</div>
+      <div class="emp-chip selected">
+        <div class="emp-name">Alex Rivera</div>
+        <div class="emp-role">Sr. Engineer</div>
+      </div>
+      <div class="emp-chip placed">
+        <div class="emp-name">✓ Sam Patel</div>
+        <div class="emp-role">Engineer</div>
+      </div>
+      <div class="emp-chip placed">
+        <div class="emp-name">✓ Jordan Lee</div>
+        <div class="emp-role">Designer</div>
+      </div>
+      <div class="emp-chip">
+        <div class="emp-name">Taylor Kim</div>
+        <div class="emp-role">PM</div>
+      </div>
+      <div class="emp-chip">
+        <div class="emp-name">Morgan Wu</div>
+        <div class="emp-role">Analyst</div>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid-area">
+      <div class="axis-col">
+        <div class="y-label">Potential (High → Low)</div>
+        <div class="grid-inner">
+          <div class="col-headers">
+            <div class="col-header">Low Performance</div>
+            <div class="col-header">Med Performance</div>
+            <div class="col-header">High Performance</div>
+          </div>
+
+          <div class="grid-rows">
+            <!-- Row 1: High Potential -->
+            <div class="grid-row">
+              <div class="row-label">High Potential</div>
+              <div class="cell cell-rough-diamond">
+                <div class="cell-title">Rough Diamond</div>
+                <div class="cell-desc">Low Perf, High Potential — Coach or move</div>
+                <div class="cell-names"></div>
+              </div>
+              <div class="cell cell-rising-star">
+                <div class="cell-title">Rising Star</div>
+                <div class="cell-desc">Med Perf, High Potential — Invest in development</div>
+                <div class="cell-names"></div>
+              </div>
+              <div class="cell cell-superstar drop-hint">
+                <div class="cell-title">Superstar</div>
+                <div class="cell-desc">High Perf, High Potential — Future leaders</div>
+                <div class="cell-names">
+                  <span class="drop-text">← place Alex here</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 2: Med Potential -->
+            <div class="grid-row">
+              <div class="row-label">Med Potential</div>
+              <div class="cell cell-inconsistent">
+                <div class="cell-title">Inconsistent</div>
+                <div class="cell-desc">Low Perf, Med Potential — Performance improvement needed</div>
+                <div class="cell-names"></div>
+              </div>
+              <div class="cell cell-core-player">
+                <div class="cell-title">Core Player</div>
+                <div class="cell-desc">Med Perf, Med Potential — Backbone of organization</div>
+                <div class="cell-names">
+                  <span class="name-tag">Sam Patel</span>
+                </div>
+              </div>
+              <div class="cell cell-key-player">
+                <div class="cell-title">Key Player</div>
+                <div class="cell-desc">High Perf, Med Potential — Retain and reward</div>
+                <div class="cell-names"></div>
+              </div>
+            </div>
+
+            <!-- Row 3: Low Potential -->
+            <div class="grid-row">
+              <div class="row-label">Low Potential</div>
+              <div class="cell cell-question-mark">
+                <div class="cell-title">Question Mark</div>
+                <div class="cell-desc">Low Perf, Low Potential — Exit planning</div>
+                <div class="cell-names"></div>
+              </div>
+              <div class="cell cell-workhorse">
+                <div class="cell-title">Workhorse</div>
+                <div class="cell-desc">Med Perf, Low Potential — Reliable performers</div>
+                <div class="cell-names"></div>
+              </div>
+              <div class="cell cell-trusted-pro">
+                <div class="cell-title">Trusted Pro</div>
+                <div class="cell-desc">High Perf, Low Potential — Solid current contributors</div>
+                <div class="cell-names">
+                  <span class="name-tag">Jordan Lee</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="x-label">Performance (Low → High)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="progress"><strong>2 of 5</strong> placed — select a name, then click a cell</div>
+    <button class="submit-btn">Submit Review</button>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overflow Options</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f4f4f6;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1a1a1a;
+    padding: 24px;
+  }
+  h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #888; margin-bottom: 28px; }
+
+  .options { display: flex; gap: 20px; flex-wrap: wrap; }
+
+  .option {
+    flex: 1; min-width: 240px; max-width: 300px;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .option:hover { border-color: #a855f7; }
+  .option.selected { border-color: #7B2FBE; }
+
+  .opt-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .opt-letter {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 6px;
+    background: #7B2FBE; color: white;
+    font-weight: 800; font-size: 13px; margin-bottom: 8px;
+  }
+  .opt-title { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px; }
+  .opt-desc { font-size: 12px; color: #888; line-height: 1.4; }
+
+  .opt-demo { padding: 14px 16px; }
+
+  /* Shared cell style */
+  .cell {
+    background: #d1fae5;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1.5px solid #a7f3d0;
+  }
+  .cell-title { font-size: 12px; font-weight: 700; margin-bottom: 2px; color: #1a1a1a; }
+  .cell-desc  { font-size: 10px; color: #888; margin-bottom: 8px; }
+  .name-tag {
+    display: inline-block;
+    background: #ede9fe; color: #7B2FBE;
+    border-radius: 20px; padding: 3px 9px;
+    font-size: 11px; font-weight: 600;
+    white-space: nowrap; margin: 2px;
+  }
+
+  /* Option A — scroll */
+  .scroll-names {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    max-height: 72px; overflow-y: auto;
+  }
+  .scroll-names::-webkit-scrollbar { width: 4px; }
+  .scroll-names::-webkit-scrollbar-thumb { background: #d8b4fe; border-radius: 2px; }
+
+  /* Option B — +N more */
+  .pill-row { display: flex; flex-wrap: wrap; gap: 4px; }
+  .more-tag {
+    display: inline-block;
+    background: #f3f0ff; color: #9333ea;
+    border: 1px dashed #c084fc;
+    border-radius: 20px; padding: 3px 9px;
+    font-size: 11px; font-weight: 600;
+    cursor: pointer; margin: 2px;
+  }
+
+  /* Option C — expand */
+  .expand-names { display: flex; flex-wrap: wrap; gap: 4px; }
+
+  .opt-tradeoffs {
+    padding: 10px 16px 14px;
+    border-top: 1px solid #f4f4f4;
+  }
+  .pro { font-size: 11px; color: #16a34a; margin-bottom: 2px; }
+  .con { font-size: 11px; color: #dc2626; }
+  .pro::before { content: "✓ "; }
+  .con::before { content: "✗ "; }
+</style>
+</head>
+<body>
+
+<h2>How should busy cells handle many names?</h2>
+<p class="subtitle">Imagine the "Core Player" box has 9 direct reports placed in it</p>
+
+<div class="options">
+
+  <!-- Option A: Scrollable -->
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="opt-header">
+      <div class="opt-letter">A</div>
+      <div class="opt-title">Scrollable Cell</div>
+      <div class="opt-desc">Cell has a fixed height. If names overflow, the cell scrolls vertically.</div>
+    </div>
+    <div class="opt-demo">
+      <div class="cell">
+        <div class="cell-title">Superstar</div>
+        <div class="cell-desc">High Perf, High Potential — Future leaders</div>
+        <div class="scroll-names">
+          <span class="name-tag">Alex Rivera</span>
+          <span class="name-tag">Sam Patel</span>
+          <span class="name-tag">Jordan Lee</span>
+          <span class="name-tag">Taylor Kim</span>
+          <span class="name-tag">Morgan Wu</span>
+          <span class="name-tag">Casey Nguyen</span>
+          <span class="name-tag">Jamie Chen</span>
+          <span class="name-tag">Riley Park</span>
+          <span class="name-tag">Drew Santos</span>
+        </div>
+      </div>
+    </div>
+    <div class="opt-tradeoffs">
+      <div class="pro">Grid stays uniform, no layout shift</div>
+      <div class="con">Easy to miss names below the fold</div>
+    </div>
+  </div>
+
+  <!-- Option B: +N More -->
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="opt-header">
+      <div class="opt-letter">B</div>
+      <div class="opt-title">Show First 4, "+N More"</div>
+      <div class="opt-desc">Show a fixed number of names, then a "+5 more" chip that expands on click.</div>
+    </div>
+    <div class="opt-demo">
+      <div class="cell">
+        <div class="cell-title">Superstar</div>
+        <div class="cell-desc">High Perf, High Potential — Future leaders</div>
+        <div class="pill-row">
+          <span class="name-tag">Alex Rivera</span>
+          <span class="name-tag">Sam Patel</span>
+          <span class="name-tag">Jordan Lee</span>
+          <span class="name-tag">Taylor Kim</span>
+          <span class="more-tag">+5 more</span>
+        </div>
+      </div>
+    </div>
+    <div class="opt-tradeoffs">
+      <div class="pro">Grid stays tidy at any team size</div>
+      <div class="con">Requires extra click to see all names</div>
+    </div>
+  </div>
+
+  <!-- Option C: Expand to fit -->
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="opt-header">
+      <div class="opt-letter">C</div>
+      <div class="opt-title">Cells Expand to Fit</div>
+      <div class="opt-desc">Cell height grows automatically as names are added — always shows everything.</div>
+    </div>
+    <div class="opt-demo">
+      <div class="cell">
+        <div class="cell-title">Superstar</div>
+        <div class="cell-desc">High Perf, High Potential — Future leaders</div>
+        <div class="expand-names">
+          <span class="name-tag">Alex Rivera</span>
+          <span class="name-tag">Sam Patel</span>
+          <span class="name-tag">Jordan Lee</span>
+          <span class="name-tag">Taylor Kim</span>
+          <span class="name-tag">Morgan Wu</span>
+          <span class="name-tag">Casey Nguyen</span>
+          <span class="name-tag">Jamie Chen</span>
+          <span class="name-tag">Riley Park</span>
+          <span class="name-tag">Drew Santos</span>
+        </div>
+      </div>
+    </div>
+    <div class="opt-tradeoffs">
+      <div class="pro">Always visible, no hidden names</div>
+      <div class="con">Rows become uneven height, grid looks messy</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

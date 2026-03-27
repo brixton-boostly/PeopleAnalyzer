@@ -1,0 +1,65 @@
+<h2>System Architecture</h2>
+<p class="subtitle">Boostly People Analyzer — high-level component overview</p>
+
+<div style="display:flex;flex-direction:column;gap:16px;max-width:700px;margin:0 auto;">
+
+  <!-- Browser -->
+  <div style="background:#1a1a2e;border:1px solid #3a3a5e;border-radius:8px;padding:16px;">
+    <div class="label" style="color:#7c7cff;margin-bottom:8px;">Browser (Next.js App Router)</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <div style="background:#12122a;border:1px solid #2a2a4e;border-radius:6px;padding:8px 14px;font-size:13px;">Login page</div>
+      <div style="background:#12122a;border:1px solid #2a2a4e;border-radius:6px;padding:8px 14px;font-size:13px;">Admin dashboard</div>
+      <div style="background:#12122a;border:1px solid #2a2a4e;border-radius:6px;padding:8px 14px;font-size:13px;">Manager 9-box view</div>
+    </div>
+  </div>
+
+  <!-- Arrows down -->
+  <div style="text-align:center;color:#555;font-size:20px;">↕</div>
+
+  <!-- Next.js API Routes -->
+  <div style="background:#1a2a1a;border:1px solid #3a5e3a;border-radius:8px;padding:16px;">
+    <div class="label" style="color:#7cff7c;margin-bottom:8px;">Next.js API Routes (Server)</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <div style="background:#122012;border:1px solid #2a4e2a;border-radius:6px;padding:8px 14px;font-size:13px;">NextAuth (sessions)</div>
+      <div style="background:#122012;border:1px solid #2a4e2a;border-radius:6px;padding:8px 14px;font-size:13px;">Magic link handler</div>
+      <div style="background:#122012;border:1px solid #2a4e2a;border-radius:6px;padding:8px 14px;font-size:13px;">Gusto sync</div>
+      <div style="background:#122012;border:1px solid #2a4e2a;border-radius:6px;padding:8px 14px;font-size:13px;">Slack DM sender</div>
+      <div style="background:#122012;border:1px solid #2a4e2a;border-radius:6px;padding:8px 14px;font-size:13px;">Review CRUD</div>
+    </div>
+  </div>
+
+  <!-- Arrows down -->
+  <div style="text-align:center;color:#555;font-size:20px;">↕</div>
+
+  <!-- External services row -->
+  <div style="display:flex;gap:12px;">
+    <div style="flex:1;background:#2a1a1a;border:1px solid #5e3a3a;border-radius:8px;padding:14px;">
+      <div class="label" style="color:#ff7c7c;margin-bottom:8px;">Supabase (Postgres)</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.6;">
+        users<br>
+        manager_assignments<br>
+        direct_reports<br>
+        review_cycles<br>
+        reviews<br>
+        audit_log<br>
+        magic_links
+      </div>
+    </div>
+    <div style="flex:1;background:#2a1a2a;border:1px solid #5e3a5e;border-radius:8px;padding:14px;">
+      <div class="label" style="color:#ff7cff;margin-bottom:8px;">External APIs</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.6;">
+        Gusto API<br>
+        → pull employees &amp; manager relationships<br><br>
+        Slack API<br>
+        → send DMs w/ magic link
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:24px;padding:14px;background:#111;border:1px solid #2a2a2a;border-radius:8px;font-size:13px;color:#888;">
+  <strong style="color:#ccc;">Hosting:</strong> Vercel &nbsp;|&nbsp;
+  <strong style="color:#ccc;">Auth:</strong> NextAuth credentials + custom magic link tokens &nbsp;|&nbsp;
+  <strong style="color:#ccc;">Styling:</strong> Tailwind + shadcn/ui
+</div>

@@ -1,0 +1,67 @@
+{"type":"server-started","port":55814,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:55814","screen_dir":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content","state_dir":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/state"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/ninebox-interaction.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/ninebox-interaction.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/ninebox-interaction.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/ninebox-interaction.html"}
+{"source":"user-event","type":"click","text":"A\n    \n      Drag & Drop\n      Employee names appear in a sidebar. Manager drags each person into the correct cell on the grid.\n      \n        Most intuitive for spatial thinking\n        More complex to build\n        Works best on desktop","choice":"a","id":null,"timestamp":1774558392162}
+{"source":"user-event","type":"click","text":"B\n    \n      Click to Place\n      Manager clicks an employee in the sidebar to select them, then clicks a cell on the grid to place them there.\n      \n        Simple and reliable\n        Works on all devices\n        Clear two-step action","choice":"b","id":null,"timestamp":1774558393560}
+{"source":"user-event","type":"click","text":"C\n    \n      Dropdown per Employee\n      Each employee in the list has two dropdowns — one for Performance, one for Potential. No grid interaction needed.\n      \n        Simplest to build & use\n        Less visual / spatial feel\n        Grid shown as read-only summary","choice":"c","id":null,"timestamp":1774558394160}
+{"source":"user-event","type":"click","text":"B\n    \n      Click to Place\n      Manager clicks an employee in the sidebar to select them, then clicks a cell on the grid to place them there.\n      \n        Simple and reliable\n        Works on all devices\n        Clear two-step action","choice":"b","id":null,"timestamp":1774558396160}
+{"source":"user-event","type":"click","text":"A\n    \n      Drag & Drop\n      Employee names appear in a sidebar. Manager drags each person into the correct cell on the grid.\n      \n        Most intuitive for spatial thinking\n        More complex to build\n        Works best on desktop","choice":"a","id":null,"timestamp":1774558397377}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/ninebox-interaction.html"}
+{"source":"user-event","type":"click","text":"B\n    \n      Click to Place\n      Manager clicks an employee in the sidebar to select them, then clicks a cell on the grid to place them there.\n      \n        Simple and reliable\n        Works on all devices\n        Clear two-step action","choice":"b","id":null,"timestamp":1774558400912}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/waiting-1.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/waiting-1.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture-v2.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture-v2.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture-v2.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture-v2.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/architecture-v2.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/data-model.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/data-model.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/data-model.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/data-model.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/data-model.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/user-flows.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/user-flows.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/user-flows.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/user-flows.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/user-flows.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-v2.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-v2.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-v2.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-v2.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-v3.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-v3.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-v3.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-v3.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-v3.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/overflow-options.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/overflow-options.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/overflow-options.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/overflow-options.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/overflow-options.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-final.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-final.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-final.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-final.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/manager-view-final.html"}
+{"type":"screen-added","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/admin-dashboard.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/admin-dashboard.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/admin-dashboard.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/admin-dashboard.html"}
+{"type":"screen-updated","file":"/Users/brixton/Desktop/BRIXTON/boostly-people-analyzer/.superpowers/brainstorm/16830-1774558069/content/admin-dashboard.html"}
+{"type":"server-stopped","reason":"idle timeout"}

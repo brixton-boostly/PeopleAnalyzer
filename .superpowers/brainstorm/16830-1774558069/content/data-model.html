@@ -1,0 +1,171 @@
+<h2>Data Model</h2>
+<p class="subtitle">7 tables — each with a single clear purpose</p>
+
+<style>
+  .table-card {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .table-header {
+    background: #242424;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #2e2e2e;
+  }
+  .table-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #f0f0f0;
+    font-family: monospace;
+  }
+  .table-desc {
+    font-size: 12px;
+    color: #777;
+  }
+  .table-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 16px;
+  }
+  .field {
+    font-size: 12px;
+    font-family: monospace;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: #111;
+    border: 1px solid #333;
+    color: #ccc;
+  }
+  .field.pk { border-color: #5a8eff; color: #8ab4ff; }
+  .field.fk { border-color: #5aaa77; color: #8adaa0; }
+  .field.enum { border-color: #aa7a5a; color: #daa080; }
+  .legend {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    color: #777;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+</style>
+
+<div class="legend">
+  <span><span class="dot" style="background:#5a8eff;"></span> Primary key</span>
+  <span><span class="dot" style="background:#5aaa77;"></span> Foreign key</span>
+  <span><span class="dot" style="background:#aa7a5a;"></span> Enum</span>
+</div>
+
+<div class="table-card">
+  <div class="table-header">
+    <span class="table-name">users</span>
+    <span class="table-desc">All login accounts (admin + managers)</span>
+  </div>
+  <div class="table-fields">
+    <span class="field pk">id</span>
+    <span class="field">email</span>
+    <span class="field">first_name</span>
+    <span class="field">last_name</span>
+    <span class="field enum">role: admin | manager</span>
+    <span class="field">slack_user_id</span>
+    <span class="field">password_hash</span>
+    <span class="field">must_reset_password</span>
+    <span class="field">gusto_employee_id</span>
+    <span class="field">created_at</span>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-header">
+    <span class="table-name">direct_reports</span>
+    <span class="table-desc">Employees pulled from Gusto (never log in)</span>
+  </div>
+  <div class="table-fields">
+    <span class="field pk">id</span>
+    <span class="field">gusto_employee_id</span>
+    <span class="field">full_name</span>
+    <span class="field">job_title</span>
+    <span class="field">created_at</span>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-header">
+    <span class="table-name">manager_assignments</span>
+    <span class="table-desc">Who reports to whom — editable by admin before each cycle</span>
+  </div>
+  <div class="table-fields">
+    <span class="field pk">id</span>
+    <span class="field fk">manager_id → users</span>
+    <span class="field fk">direct_report_id → direct_reports</span>
+    <span class="field fk">review_cycle_id → review_cycles</span>
+    <span class="field">created_at</span>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-header">
+    <span class="table-name">review_cycles</span>
+    <span class="table-desc">Named review periods created by admin</span>
+  </div>
+  <div class="table-fields">
+    <span class="field pk">id</span>
+    <span class="field">name</span>
+    <span class="field enum">status: draft | active | closed</span>
+    <span class="field">created_by</span>
+    <span class="field">created_at</span>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-header">
+    <span class="table-name">reviews</span>
+    <span class="table-desc">9-box placements — one per employee per cycle</span>
+  </div>
+  <div class="table-fields">
+    <span class="field pk">id</span>
+    <span class="field fk">manager_id → users</span>
+    <span class="field fk">direct_report_id → direct_reports</span>
+    <span class="field fk">review_cycle_id → review_cycles</span>
+    <span class="field enum">performance: low | medium | high</span>
+    <span class="field enum">potential: low | medium | high</span>
+    <span class="field">submitted_at</span>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-header">
+    <span class="table-name">audit_log</span>
+    <span class="table-desc">Every admin edit to a review placement</span>
+  </div>
+  <div class="table-fields">
+    <span class="field pk">id</span>
+    <span class="field fk">review_id → reviews</span>
+    <span class="field fk">changed_by → users</span>
+    <span class="field">field_changed</span>
+    <span class="field">old_value</span>
+    <span class="field">new_value</span>
+    <span class="field">changed_at</span>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-header">
+    <span class="table-name">magic_links</span>
+    <span class="table-desc">Signed tokens for Slack auto-login</span>
+  </div>
+  <div class="table-fields">
+    <span class="field pk">id</span>
+    <span class="field fk">user_id → users</span>
+    <span class="field">token</span>
+    <span class="field">expires_at</span>
+    <span class="field">used_at</span>
+  </div>
+</div>

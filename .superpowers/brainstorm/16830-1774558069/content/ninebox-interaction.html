@@ -1,0 +1,81 @@
+<h2>How should managers place employees on the 9-box?</h2>
+<p class="subtitle">Choose the interaction style that feels most natural</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Drag & Drop</h3>
+      <p>Employee names appear in a sidebar. Manager drags each person into the correct cell on the grid.</p>
+      <ul style="margin-top:8px;padding-left:16px;font-size:13px;color:#888;">
+        <li>Most intuitive for spatial thinking</li>
+        <li>More complex to build</li>
+        <li>Works best on desktop</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Click to Place</h3>
+      <p>Manager clicks an employee in the sidebar to select them, then clicks a cell on the grid to place them there.</p>
+      <ul style="margin-top:8px;padding-left:16px;font-size:13px;color:#888;">
+        <li>Simple and reliable</li>
+        <li>Works on all devices</li>
+        <li>Clear two-step action</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Dropdown per Employee</h3>
+      <p>Each employee in the list has two dropdowns — one for Performance, one for Potential. No grid interaction needed.</p>
+      <ul style="margin-top:8px;padding-left:16px;font-size:13px;color:#888;">
+        <li>Simplest to build & use</li>
+        <li>Less visual / spatial feel</li>
+        <li>Grid shown as read-only summary</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px;">
+  <div class="mockup">
+    <div class="mockup-header">9-box grid reference</div>
+    <div class="mockup-body">
+      <table style="width:100%;border-collapse:collapse;text-align:center;font-size:12px;">
+        <thead>
+          <tr>
+            <th style="width:80px;"></th>
+            <th style="padding:6px;border:1px solid #333;color:#aaa;">Low Performance</th>
+            <th style="padding:6px;border:1px solid #333;color:#aaa;">Med Performance</th>
+            <th style="padding:6px;border:1px solid #333;color:#aaa;">High Performance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:6px;border:1px solid #333;color:#aaa;font-size:11px;">High Potential</td>
+            <td style="padding:20px 6px;border:1px solid #333;background:#1a1a2e;"></td>
+            <td style="padding:20px 6px;border:1px solid #333;background:#1a2a1a;"></td>
+            <td style="padding:20px 6px;border:1px solid #333;background:#1a3a1a;"></td>
+          </tr>
+          <tr>
+            <td style="padding:6px;border:1px solid #333;color:#aaa;font-size:11px;">Med Potential</td>
+            <td style="padding:20px 6px;border:1px solid #333;background:#1a1a2e;"></td>
+            <td style="padding:20px 6px;border:1px solid #333;background:#1a2a1a;"></td>
+            <td style="padding:20px 6px;border:1px solid #333;background:#1a3a1a;"></td>
+          </tr>
+          <tr>
+            <td style="padding:6px;border:1px solid #333;color:#aaa;font-size:11px;">Low Potential</td>
+            <td style="padding:20px 6px;border:1px solid #333;background:#2a1a1a;"></td>
+            <td style="padding:20px 6px;border:1px solid #333;background:#1a1a2e;"></td>
+            <td style="padding:20px 6px;border:1px solid #333;background:#1a2a1a;"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+<h2>System Architecture</h2>
+<p class="subtitle">Boostly People Analyzer — component overview</p>
+
+<style>
+  .arch-layer {
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+  }
+  .arch-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .arch-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .arch-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #e8e8e8;
+  }
+  .arch-arrow {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    margin: 4px 0;
+  }
+  .arch-row {
+    display: flex;
+    gap: 12px;
+  }
+  .arch-row .arch-layer {
+    flex: 1;
+  }
+  .db-list {
+    font-size: 12px;
+    color: #ccc;
+    line-height: 1.8;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .db-list li::before {
+    content: "· ";
+    color: #888;
+  }
+</style>
+
+<div style="max-width:660px;margin:0 auto;">
+
+  <div class="arch-layer" style="background:#1e3a5f;border:1px solid #2d5a8e;">
+    <div class="arch-label" style="color:#60b4ff;">Browser — Next.js App Router</div>
+    <div class="arch-chips">
+      <span class="arch-chip">Login page</span>
+      <span class="arch-chip">Admin dashboard</span>
+      <span class="arch-chip">Manager 9-box view</span>
+    </div>
+  </div>
+
+  <div class="arch-arrow">↕</div>
+
+  <div class="arch-layer" style="background:#1e4a2e;border:1px solid #2d7a44;">
+    <div class="arch-label" style="color:#5dd67c;">Next.js API Routes — Server</div>
+    <div class="arch-chips">
+      <span class="arch-chip">NextAuth sessions</span>
+      <span class="arch-chip">Magic link handler</span>
+      <span class="arch-chip">Gusto sync</span>
+      <span class="arch-chip">Slack DM sender</span>
+      <span class="arch-chip">Review CRUD</span>
+      <span class="arch-chip">Audit log writer</span>
+    </div>
+  </div>
+
+  <div class="arch-arrow">↕</div>
+
+  <div class="arch-row">
+    <div class="arch-layer" style="background:#3a2020;border:1px solid #6e3a3a;">
+      <div class="arch-label" style="color:#ff8a8a;">Supabase — Postgres</div>
+      <ul class="db-list">
+        <li>users</li>
+        <li>manager_assignments</li>
+        <li>direct_reports</li>
+        <li>review_cycles</li>
+        <li>reviews</li>
+        <li>audit_log</li>
+        <li>magic_links</li>
+      </ul>
+    </div>
+
+    <div class="arch-layer" style="background:#2a1e40;border:1px solid #5a3a7a;">
+      <div class="arch-label" style="color:#c08aff;">External APIs</div>
+      <ul class="db-list">
+        <li>Gusto — employees &amp; manager relationships</li>
+        <li>Slack — DMs with magic link</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;padding:12px 16px;background:#1a1a1a;border:1px solid #333;border-radius:8px;font-size:12px;color:#999;display:flex;gap:24px;flex-wrap:wrap;">
+    <span><strong style="color:#ddd;">Hosting:</strong> Vercel</span>
+    <span><strong style="color:#ddd;">Auth:</strong> NextAuth credentials + custom magic tokens</span>
+    <span><strong style="color:#ddd;">UI:</strong> Tailwind + shadcn/ui</span>
+  </div>
+
+</div>

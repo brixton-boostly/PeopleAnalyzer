@@ -1,0 +1,247 @@
+<h2>Manager View — 9-Box</h2>
+<p class="subtitle">Click an employee, then click a cell to place them</p>
+
+<style>
+  .mockup-shell {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 780px;
+    margin: 0 auto;
+    font-size: 13px;
+  }
+  .mockup-topbar {
+    background: #1a1a1a;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mockup-topbar-title { font-weight: 700; color: #f0f0f0; font-size: 14px; }
+  .mockup-topbar-sub { font-size: 12px; color: #666; }
+  .mockup-body {
+    display: flex;
+    gap: 0;
+  }
+  /* Sidebar */
+  .sidebar {
+    width: 180px;
+    min-width: 180px;
+    background: #161616;
+    border-right: 1px solid #2a2a2a;
+    padding: 12px;
+  }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  .employee-chip {
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    border-radius: 6px;
+    padding: 7px 10px;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+  .employee-chip.selected {
+    background: #1e3a5f;
+    border-color: #2d5a8e;
+  }
+  .employee-chip.placed {
+    background: #1a2a1a;
+    border-color: #2a4a2a;
+    opacity: 0.6;
+  }
+  .emp-name { font-weight: 600; color: #e0e0e0; font-size: 12px; }
+  .emp-role { font-size: 11px; color: #777; margin-top: 1px; }
+  /* Grid */
+  .grid-area {
+    flex: 1;
+    padding: 16px;
+  }
+  .grid-axes {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .axis-label-y {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    min-width: 16px;
+    letter-spacing: 0.05em;
+  }
+  .grid-table { border-collapse: collapse; width: 100%; }
+  .grid-row-label {
+    font-size: 11px;
+    color: #666;
+    text-align: right;
+    padding-right: 8px;
+    white-space: nowrap;
+    width: 70px;
+  }
+  .grid-cell {
+    border: 1px solid #2a2a2a;
+    width: 33.3%;
+    height: 72px;
+    vertical-align: top;
+    padding: 6px;
+    position: relative;
+    cursor: pointer;
+  }
+  .grid-cell:hover { background: #1e2a1e; border-color: #3a5a3a; }
+  .grid-cell.highlight { background: #1a2a3a; border-color: #2a4a6a; }
+  .col-header {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    padding: 4px 0 8px;
+  }
+  .placed-name {
+    background: #2a4a2a;
+    border: 1px solid #3a6a3a;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 11px;
+    color: #8ada8a;
+    margin-bottom: 3px;
+    display: inline-block;
+  }
+  .x-axis-label {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+  /* Footer */
+  .mockup-footer {
+    background: #161616;
+    border-top: 1px solid #2a2a2a;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .progress-text { font-size: 12px; color: #777; }
+  .submit-btn {
+    background: #1e4a2e;
+    border: 1px solid #2d7a44;
+    border-radius: 6px;
+    padding: 7px 18px;
+    color: #5dd67c;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.5;
+  }
+</style>
+
+<div class="mockup-shell">
+  <!-- Top bar -->
+  <div class="mockup-topbar">
+    <div>
+      <div class="mockup-topbar-title">People Review — Q2 2025</div>
+      <div class="mockup-topbar-sub">Place each team member on the grid, then submit.</div>
+    </div>
+    <div style="font-size:12px;color:#555;">Logged in as Jamie Chen</div>
+  </div>
+
+  <!-- Body -->
+  <div class="mockup-body">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-label">Your Team (5)</div>
+
+      <div class="employee-chip selected">
+        <div class="emp-name">Alex Rivera</div>
+        <div class="emp-role">Sr. Engineer</div>
+      </div>
+      <div class="employee-chip placed">
+        <div class="emp-name">✓ Sam Patel</div>
+        <div class="emp-role">Engineer</div>
+      </div>
+      <div class="employee-chip placed">
+        <div class="emp-name">✓ Jordan Lee</div>
+        <div class="emp-role">Designer</div>
+      </div>
+      <div class="employee-chip">
+        <div class="emp-name">Taylor Kim</div>
+        <div class="emp-role">PM</div>
+      </div>
+      <div class="employee-chip">
+        <div class="emp-name">Morgan Wu</div>
+        <div class="emp-role">Analyst</div>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid-area">
+      <div style="display:flex;gap:4px;">
+        <div style="width:78px;"></div>
+        <div style="flex:1;display:flex;">
+          <div class="col-header" style="flex:1;">Low Performance</div>
+          <div class="col-header" style="flex:1;">Med Performance</div>
+          <div class="col-header" style="flex:1;">High Performance</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:4px;align-items:stretch;">
+        <!-- Y-axis labels -->
+        <div style="width:78px;display:flex;flex-direction:column;justify-content:space-around;text-align:right;padding-right:8px;gap:0;">
+          <div style="flex:1;display:flex;align-items:center;justify-content:flex-end;font-size:11px;color:#666;">High Potential</div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:flex-end;font-size:11px;color:#666;">Med Potential</div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:flex-end;font-size:11px;color:#666;">Low Potential</div>
+        </div>
+
+        <!-- Grid cells -->
+        <table class="grid-table" style="flex:1;">
+          <tbody>
+            <tr>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell highlight">
+                <!-- Selected employee would land here on click -->
+                <div style="font-size:10px;color:#4a7a8a;font-style:italic;">← click to place Alex Rivera</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <span class="placed-name">Sam Patel</span>
+              </td>
+              <td class="grid-cell"></td>
+            </tr>
+            <tr>
+              <td class="grid-cell"></td>
+              <td class="grid-cell"></td>
+              <td class="grid-cell">
+                <span class="placed-name">Jordan Lee</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="x-axis-label">← Performance →</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="mockup-footer">
+    <div class="progress-text">2 of 5 placed — select an employee, then click a cell</div>
+    <div class="submit-btn">Submit Review</div>
+  </div>
+</div>
+
+<div style="margin-top:12px;font-size:12px;color:#666;padding:0 4px;">
+  Submit button activates once all employees are placed. After submission the view becomes read-only with a timestamp shown.
+</div>

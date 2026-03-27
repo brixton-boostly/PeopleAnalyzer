@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager View Final</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f4f4f6;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1a1a1a;
+    padding: 24px;
+  }
+  h2 { font-size: 15px; color: #555; font-weight: 500; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #999; margin-bottom: 20px; }
+
+  .shell {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 920px;
+    margin: 0 auto;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  }
+
+  /* Topbar */
+  .topbar {
+    background: #fff;
+    border-bottom: 1px solid #ebebeb;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 10px; }
+  .logo-wrap {
+    width: 34px; height: 34px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 5px;
+  }
+  .logo-wrap svg { width: 100%; height: 100%; }
+  .topbar-title { font-weight: 700; font-size: 15px; color: #1a1a1a; }
+  .cycle-badge {
+    background: #f0e8ff; color: #7B2FBE;
+    font-size: 12px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .topbar-user { font-size: 12px; color: #aaa; }
+
+  /* Body */
+  .body { display: flex; min-height: 430px; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 185px; min-width: 185px;
+    background: #fafafa;
+    border-right: 1px solid #ebebeb;
+    padding: 16px 12px;
+  }
+  .sidebar-label {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: #bbb; margin-bottom: 10px; padding: 0 4px;
+  }
+  .emp-chip {
+    border-radius: 8px; padding: 8px 10px; margin-bottom: 6px;
+    cursor: pointer; border: 1.5px solid #e8e8e8; background: #fff;
+  }
+  .emp-chip.selected { background: #f0e8ff; border-color: #c084fc; }
+  .emp-chip.placed   { background: #f5fff5; border-color: #86efac; }
+  .emp-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+  .emp-chip.selected .emp-name { color: #7B2FBE; }
+  .emp-chip.placed   .emp-name { color: #16a34a; font-size: 12px; }
+  .emp-role { font-size: 11px; color: #bbb; margin-top: 1px; }
+
+  /* Grid */
+  .grid-area { flex: 1; padding: 18px 20px; }
+  .axis-col { display: flex; gap: 6px; align-items: stretch; }
+  .y-label {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-size: 10px; color: #aaa; text-align: center;
+    letter-spacing: 0.07em; min-width: 14px;
+    font-weight: 600; text-transform: uppercase;
+  }
+  .grid-inner { flex: 1; }
+  .col-headers { display: flex; gap: 4px; margin-left: 78px; margin-bottom: 4px; }
+  .col-header { flex: 1; text-align: center; font-size: 10px; color: #aaa; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .grid-rows { display: flex; flex-direction: column; gap: 4px; }
+  .grid-row { display: flex; gap: 4px; align-items: stretch; }
+  .row-label {
+    width: 74px; min-width: 74px;
+    text-align: right; padding-right: 8px;
+    font-size: 10px; color: #aaa; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    display: flex; align-items: center; justify-content: flex-end;
+  }
+  .cell {
+    flex: 1; min-height: 100px;
+    border-radius: 8px; padding: 10px;
+    cursor: pointer; border: 1.5px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .cell:hover { border-color: #a855f7 !important; }
+  .cell.drop-hint { border: 2px dashed #a855f7 !important; }
+
+  .cell-superstar     { background: #d1fae5; }
+  .cell-rising-star   { background: #fef9c3; }
+  .cell-rough-diamond { background: #fce7f3; }
+  .cell-key-player    { background: #dcfce7; }
+  .cell-core-player   { background: #eff6ff; }
+  .cell-inconsistent  { background: #fff1f2; }
+  .cell-trusted-pro   { background: #e0f2fe; }
+  .cell-workhorse     { background: #f0fdf4; }
+  .cell-question-mark { background: #fef2f2; }
+
+  .cell-title { font-size: 11px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
+  .cell-desc  { font-size: 10px; color: #888; margin-bottom: 7px; line-height: 1.3; }
+  .cell-names { display: flex; flex-wrap: wrap; gap: 3px; }
+
+  .name-tag {
+    background: #ede9fe; color: #7B2FBE;
+    border-radius: 20px; padding: 3px 8px;
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+  }
+  .more-tag {
+    background: #f5f3ff; color: #9333ea;
+    border: 1px dashed #c084fc;
+    border-radius: 20px; padding: 3px 8px;
+    font-size: 11px; font-weight: 600; cursor: pointer;
+  }
+  .drop-text { font-size: 11px; color: #a855f7; font-style: italic; }
+
+  .x-label {
+    text-align: center; font-size: 10px; color: #aaa;
+    font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.07em; margin-top: 8px; margin-left: 78px;
+  }
+
+  /* Footer */
+  .footer {
+    background: #fafafa; border-top: 1px solid #ebebeb;
+    padding: 12px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .progress { font-size: 13px; color: #999; }
+  .progress strong { color: #7B2FBE; }
+  .submit-btn {
+    background: #e8e0f5; color: #b09cc8;
+    border: none; border-radius: 8px;
+    padding: 9px 24px; font-size: 13px; font-weight: 700;
+    cursor: not-allowed;
+  }
+  .submit-btn.active { background: #7B2FBE; color: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h2>Manager View — Final</h2>
+<p class="subtitle">Alex Rivera selected — click a cell to place. Core Player cell shows "+N more" overflow.</p>
+
+<div class="shell">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo-wrap">
+        <svg width="141" height="141" viewBox="0 0 141 141" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M44.3408 72.5293C55.2937 72.3554 64.3339 81.5696 64.334 92.3486C63.9863 106.953 69.8979 112.864 73.375 115.124C73.8963 115.472 73.7225 116.341 73.0273 116.341H44.3408C33.2141 116.341 24.3477 107.301 24.3477 96.3477V92.5225C24.3478 81.3958 33.388 72.5293 44.3408 72.5293ZM115.471 67.1387C115.818 66.6171 116.688 66.7909 116.688 67.4863V96.3467C116.687 107.473 107.647 116.34 96.6943 116.34H92.8691C81.7425 116.34 72.8762 107.299 72.876 96.3467C72.5283 85.2199 81.7424 76.1787 92.6953 76.1787C107.299 76.5264 113.211 70.6158 115.471 67.1387ZM69.2119 61.5625C69.6209 60.616 70.9631 60.616 71.3721 61.5625C72.8194 64.9118 75.461 67.6045 78.7822 69.1152C79.7008 69.5335 79.701 70.8388 78.7822 71.2568C75.4611 72.7676 72.8195 75.4593 71.3721 78.8086C70.9631 79.7551 69.6209 79.7551 69.2119 78.8086C67.7646 75.4593 65.1229 72.7676 61.8018 71.2568C60.8828 70.8388 60.8829 69.5334 61.8018 69.1152C65.123 67.6045 67.7645 64.9118 69.2119 61.5625ZM47.8184 24.1738C58.9451 24.1739 67.8114 33.2142 67.8115 44.167C68.1592 55.2938 58.9451 64.1601 47.9922 64.1602C33.3883 63.8124 27.4769 69.7241 25.2168 73.2012C24.869 73.7225 24.0001 73.5488 24 72.8535V44.167C24.0001 33.0404 33.0404 24.174 43.9932 24.1738H47.8184ZM96.5225 24C107.649 24.0001 116.515 33.0404 116.516 43.9932V47.8184C116.516 58.945 107.475 67.8114 96.5225 67.8115C85.3957 68.1592 76.5283 58.9451 76.5283 47.9922C76.876 33.3883 70.9654 27.4769 67.4883 25.2168C66.9668 24.8691 67.1406 24 67.8359 24H96.5225Z" fill="#28008F"/>
+        </svg>
+      </div>
+      <span class="topbar-title">People Analyzer</span>
+      <span class="cycle-badge">Q2 2025</span>
+    </div>
+    <span class="topbar-user">Jamie Chen</span>
+  </div>
+
+  <div class="body">
+    <div class="sidebar">
+      <div class="sidebar-label">Your Team (5)</div>
+      <div class="emp-chip selected">
+        <div class="emp-name">Alex Rivera</div>
+        <div class="emp-role">Sr. Engineer</div>
+      </div>
+      <div class="emp-chip placed">
+        <div class="emp-name">✓ Sam Patel</div>
+        <div class="emp-role">Engineer</div>
+      </div>
+      <div class="emp-chip placed">
+        <div class="emp-name">✓ Jordan Lee</div>
+        <div class="emp-role">Designer</div>
+      </div>
+      <div class="emp-chip placed">
+        <div class="emp-name">✓ Taylor Kim</div>
+        <div class="emp-role">PM</div>
+      </div>
+      <div class="emp-chip placed">
+        <div class="emp-name">✓ Morgan Wu</div>
+        <div class="emp-role">Analyst</div>
+      </div>
+    </div>
+
+    <div class="grid-area">
+      <div class="axis-col">
+        <div class="y-label">Potential (High → Low)</div>
+        <div class="grid-inner">
+          <div class="col-headers">
+            <div class="col-header">Low Performance</div>
+            <div class="col-header">Med Performance</div>
+            <div class="col-header">High Performance</div>
+          </div>
+          <div class="grid-rows">
+            <div class="grid-row">
+              <div class="row-label">High Potential</div>
+              <div class="cell cell-rough-diamond">
+                <div class="cell-title">Rough Diamond</div>
+                <div class="cell-desc">Coach or move</div>
+              </div>
+              <div class="cell cell-rising-star">
+                <div class="cell-title">Rising Star</div>
+                <div class="cell-desc">Invest in development</div>
+              </div>
+              <div class="cell cell-superstar drop-hint">
+                <div class="cell-title">Superstar</div>
+                <div class="cell-desc">Future leaders</div>
+                <div class="cell-names"><span class="drop-text">← place Alex here</span></div>
+              </div>
+            </div>
+            <div class="grid-row">
+              <div class="row-label">Med Potential</div>
+              <div class="cell cell-inconsistent">
+                <div class="cell-title">Inconsistent</div>
+                <div class="cell-desc">Performance improvement needed</div>
+              </div>
+              <div class="cell cell-core-player">
+                <div class="cell-title">Core Player</div>
+                <div class="cell-desc">Backbone of organization</div>
+                <div class="cell-names">
+                  <span class="name-tag">Sam Patel</span>
+                  <span class="name-tag">Jordan Lee</span>
+                  <span class="name-tag">Taylor Kim</span>
+                  <span class="name-tag">Morgan Wu</span>
+                  <span class="more-tag">+5 more</span>
+                </div>
+              </div>
+              <div class="cell cell-key-player">
+                <div class="cell-title">Key Player</div>
+                <div class="cell-desc">Retain and reward</div>
+              </div>
+            </div>
+            <div class="grid-row">
+              <div class="row-label">Low Potential</div>
+              <div class="cell cell-question-mark">
+                <div class="cell-title">Question Mark</div>
+                <div class="cell-desc">Exit planning</div>
+              </div>
+              <div class="cell cell-workhorse">
+                <div class="cell-title">Workhorse</div>
+                <div class="cell-desc">Reliable performers</div>
+              </div>
+              <div class="cell cell-trusted-pro">
+                <div class="cell-title">Trusted Pro</div>
+                <div class="cell-desc">Solid current contributors</div>
+              </div>
+            </div>
+          </div>
+          <div class="x-label">Performance (Low → High)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="progress">Select a name, then click a cell to place them</div>
+    <button class="submit-btn active">Submit Review</button>
+  </div>
+</div>
+
+</body>
+</html>
