@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { NineBoxView } from '@/components/ninebox/NineBoxView'
 import { TeamRetros } from './TeamRetros'
-import type { DirectReport, Review, Retro } from '@/lib/types'
+import type { DirectReport, Review, Retro, RetroStatus } from '@/lib/types'
 
 interface Props {
   cycleId: string
@@ -12,7 +12,7 @@ interface Props {
   submittedAt: string | null
   managerName: string
   retros: Retro[]
-  retroStatus: string
+  retroStatus: RetroStatus
 }
 
 export function ReviewTabsView({

@@ -21,18 +21,24 @@ export function TeamRetros({ cycleName, directReports, retros }: Props) {
   const [savedId, setSavedId] = useState<string | null>(null)
 
   const retroByEmployee = new Map(retros.map(r => [r.employee_id, r]))
-  const submittedCount = retros.filter(r => r.submitted_at).length
+  const drIdSet = new Set(directReports.map(dr => dr.id))
+  const submittedCount = retros.filter(r => r.submitted_at && drIdSet.has(r.employee_id)).length
 
   async function saveComment(retroId: string, comment: string) {
     setSavingId(retroId)
-    await fetch('/api/retro/comment', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ retroId, comment }),
-    })
-    setSavingId(null)
-    setSavedId(retroId)
-    setTimeout(() => setSavedId(prev => (prev === retroId ? null : prev)), 2000)
+    try {
+      const res = await fetch('/api/retro/comment', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ retroId, comment }),
+      })
+      if (res.ok) {
+        setSavedId(retroId)
+        setTimeout(() => setSavedId(prev => (prev === retroId ? null : prev)), 2000)
+      }
+    } finally {
+      setSavingId(null)
+    }
   }
 
   return (
