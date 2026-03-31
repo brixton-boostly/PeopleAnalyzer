@@ -8,6 +8,7 @@ const cell = {
   label: 'Superstar',
   description: 'Future leaders',
   color: '#d1fae5',
+  textColor: '#065f46',
 }
 
 it('renders title and description', () => {

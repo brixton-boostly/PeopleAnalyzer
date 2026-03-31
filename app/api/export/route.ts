@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   const { data, error } = await supabase
     .from('reviews')
     .select(`
-      performance, potential, submitted_at,
+      performance, potential, comments, submitted_at,
       manager:users!manager_id(first_name, last_name, email),
       direct_report:direct_reports!direct_report_id(full_name, job_title),
       cycle:review_cycles!review_cycle_id(name)
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
   const rows = [
-    ['Cycle', 'Manager', 'Manager Email', 'Employee', 'Job Title', 'Performance', 'Potential', 'Submitted At'],
+    ['Cycle', 'Manager', 'Manager Email', 'Employee', 'Job Title', 'Performance', 'Potential', 'Notes', 'Submitted At'],
     ...(data ?? []).map((r: any) => [
       r.cycle?.name ?? '',
       `${r.manager?.first_name} ${r.manager?.last_name}`,
@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
       r.direct_report?.job_title ?? '',
       r.performance ?? '',
       r.potential ?? '',
+      r.comments ?? '',
       r.submitted_at ? new Date(r.submitted_at).toLocaleString() : '',
     ]),
   ]

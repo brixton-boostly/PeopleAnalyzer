@@ -68,7 +68,7 @@ export default async function AdminOverviewPage({
           <h1 className="text-[17px] font-bold">{cycle.name} — Overview</h1>
           <p className="text-xs text-gray-400 mt-0.5">{statusLabel} · {managers.length} managers</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <Link href={`/api/export?cycleId=${cycleId}`}>
             <Button variant="outline" size="sm" className="text-xs">📤 Export CSV</Button>
           </Link>
