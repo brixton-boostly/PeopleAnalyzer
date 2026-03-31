@@ -3,6 +3,7 @@ export async function sendNudgeDM(
   firstName: string,
   magicLinkUrl: string
 ): Promise<void> {
+  if (!process.env.SLACK_BOT_TOKEN) throw new Error('SLACK_BOT_TOKEN not set')
   const text = `Hey ${firstName} — it's time to complete your People Review. Click here to get started: ${magicLinkUrl}`
 
   const res = await fetch('https://slack.com/api/chat.postMessage', {
@@ -21,9 +22,11 @@ export async function sendNudgeDM(
 export async function sendRetroDM(
   slackUserId: string,
   firstName: string,
-  retroUrl: string
+  retroUrl: string,
+  cycleName: string
 ): Promise<void> {
-  const text = `Hey ${firstName} — it's time to complete your Q1 Retro. Take a few minutes to reflect on the quarter: ${retroUrl}`
+  if (!process.env.SLACK_BOT_TOKEN) throw new Error('SLACK_BOT_TOKEN not set')
+  const text = `Hey ${firstName} — it's time to complete your ${cycleName} Retro. Take a few minutes to reflect on the quarter: ${retroUrl}`
 
   const res = await fetch('https://slack.com/api/chat.postMessage', {
     method: 'POST',

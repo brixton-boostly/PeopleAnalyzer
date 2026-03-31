@@ -25,7 +25,7 @@ export default async function ResultsPage({
   const { data: reviews } = await supabase
     .from('reviews')
     .select(`
-      id, performance, potential, submitted_at,
+      id, performance, potential, comments, submitted_at,
       manager:users!manager_id(first_name, last_name),
       direct_report:direct_reports!direct_report_id(full_name, job_title)
     `)
@@ -40,6 +40,7 @@ export default async function ResultsPage({
     jobTitle: r.direct_report.job_title,
     performance: r.performance,
     potential: r.potential,
+    comments: r.comments ?? null,
     submittedAt: r.submitted_at,
   }))
 

@@ -51,7 +51,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
+      if (trigger === 'update' && session?.mustResetPassword === false) {
+        token.mustResetPassword = false
+      }
       if (user) {
         token.id = user.id
         token.role = (user as any).role
@@ -68,4 +71,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   pages: { signIn: '/login' },
   session: { strategy: 'jwt' },
+  trustHost: true,
 })

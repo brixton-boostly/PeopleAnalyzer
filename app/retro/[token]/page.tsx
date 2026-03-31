@@ -44,7 +44,15 @@ export default async function RetroPage({
   }
 
   const firstName = employeeRes.data.full_name.split(' ')[0]
-  const questions: string[] = cycleRes.data.retro_questions as unknown as string[]
+  const rawQuestions = cycleRes.data.retro_questions
+  if (!Array.isArray(rawQuestions)) {
+    return (
+      <div className="min-h-screen bg-[#f4f4f6] flex items-center justify-center">
+        <p className="text-gray-400">Something went wrong. Please contact your admin.</p>
+      </div>
+    )
+  }
+  const questions: string[] = rawQuestions as string[]
 
   return (
     <RetroForm

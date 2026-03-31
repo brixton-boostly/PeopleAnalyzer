@@ -16,8 +16,8 @@ export function AdminShell({ cycles, children }: Props) {
   const pathParts = pathname.split('/').filter(Boolean)
   const activeCycleId = pathParts[1] && pathParts[1] !== 'new' ? pathParts[1] : null
 
-  function navItem(href: string, icon: string, label: string) {
-    const active = pathname === href || pathname.startsWith(href + '/')
+  function navItem(href: string, icon: string, label: string, exact = false) {
+    const active = exact ? pathname === href : (pathname === href || pathname.startsWith(href + '/'))
     return (
       <Link
         key={href}
@@ -52,7 +52,7 @@ export function AdminShell({ cycles, children }: Props) {
           {activeCycleId && (
             <div className="mb-5">
               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-2 px-2">Current Cycle</p>
-              {navItem(`/admin/${activeCycleId}`, '📊', 'Overview')}
+              {navItem(`/admin/${activeCycleId}`, '📊', 'Overview', true)}
               {navItem(`/admin/${activeCycleId}/assignments`, '👥', 'Assignments')}
               {navItem(`/admin/${activeCycleId}/results`, '📋', 'Results')}
             </div>

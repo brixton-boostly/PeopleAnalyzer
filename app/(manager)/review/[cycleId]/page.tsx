@@ -34,7 +34,7 @@ export default async function ReviewPage({
 
   const { data: reviews } = await supabase
     .from('reviews')
-    .select('id, direct_report_id, performance, potential, submitted_at, manager_id, review_cycle_id')
+    .select('id, direct_report_id, performance, potential, comments, submitted_at, manager_id, review_cycle_id')
     .eq('manager_id', session.user.id)
     .eq('review_cycle_id', cycleId)
 

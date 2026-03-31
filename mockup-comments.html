@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>9-Box Comment Mockup</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f4f6; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 48px; }
+  h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #9ca3af; margin-bottom: 12px; }
+
+  .card { background: white; border: 1px solid #e5e7eb; border-radius: 14px; overflow: hidden; width: 920px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+
+  /* Topbar */
+  .topbar { background: white; border-bottom: 1px solid #f3f4f6; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar .title { font-size: 15px; font-weight: 700; }
+  .topbar .badge { background: #f0e8ff; color: #7B2FBE; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px; margin-left: 8px; }
+  .topbar .who { font-size: 12px; color: #9ca3af; }
+
+  /* Body */
+  .body { display: flex; min-height: 460px; }
+
+  /* Sidebar */
+  .sidebar { width: 200px; min-width: 200px; background: #fafafa; border-right: 1px solid #f3f4f6; padding: 12px; overflow-y: auto; }
+  .sidebar-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #d1d5db; margin-bottom: 10px; padding: 0 4px; }
+  .emp { border-radius: 8px; border: 1.5px solid; padding: 8px 10px; margin-bottom: 6px; cursor: pointer; transition: all .15s; }
+  .emp.unplaced { background: white; border-color: #e5e7eb; }
+  .emp.placed { background: #f0fdf4; border-color: #bbf7d0; }
+  .emp.placed-open { background: #f0fdf4; border-color: #6ee7b7; }
+  .emp.selected { background: #f0e8ff; border-color: #c4b5fd; }
+  .emp-name { font-size: 13px; font-weight: 600; }
+  .emp.unplaced .emp-name { color: #111827; }
+  .emp.placed .emp-name, .emp.placed-open .emp-name { color: #15803d; }
+  .emp.selected .emp-name { color: #7B2FBE; }
+  .emp-title { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+
+  /* Comment expansion */
+  .comment-area { margin-top: 8px; }
+  .comment-area textarea {
+    width: 100%; font-size: 12px; color: #374151; background: white;
+    border: 1px solid #d1d5db; border-radius: 6px; padding: 6px 8px;
+    resize: none; outline: none; line-height: 1.4; font-family: inherit;
+  }
+  .comment-area textarea:focus { border-color: #a78bfa; box-shadow: 0 0 0 2px #ede9fe; }
+  .comment-area .hint { font-size: 10px; color: #9ca3af; margin-top: 4px; text-align: right; }
+
+  /* Grid area */
+  .grid-area { flex: 1; display: flex; flex-direction: column; padding: 16px; gap: 12px; }
+  .grid-header { display: flex; justify-content: center; }
+  .axis-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #9ca3af; }
+
+  .grid { display: grid; grid-template-columns: 24px 1fr 1fr 1fr; grid-template-rows: 1fr 1fr 1fr 24px; gap: 5px; flex: 1; }
+  .y-label { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #9ca3af; display: flex; align-items: center; justify-content: center; }
+  .x-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #9ca3af; display: flex; align-items: center; justify-content: center; }
+  .cell { border-radius: 10px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; min-height: 110px; border: 1.5px solid transparent; transition: all .15s; }
+  .cell:hover { filter: brightness(.97); }
+  .cell-label { font-size: 11px; font-weight: 700; line-height: 1.3; }
+  .cell-desc { font-size: 10px; opacity: .75; margin-top: 2px; line-height: 1.3; }
+  .chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 6px; }
+  .chip { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; background: rgba(0,0,0,.1); }
+
+  /* Cell colors */
+  .c1 { background: #fef3c7; color: #92400e; }
+  .c2 { background: #d1fae5; color: #065f46; }
+  .c3 { background: #bbf7d0; color: #14532d; }
+  .c4 { background: #fee2e2; color: #991b1b; }
+  .c5 { background: #fef3c7; color: #92400e; }
+  .c6 { background: #d1fae5; color: #065f46; }
+  .c7 { background: #fecaca; color: #7f1d1d; }
+  .c8 { background: #fee2e2; color: #991b1b; }
+  .c9 { background: #fef9c3; color: #854d0e; }
+
+  /* Footer */
+  .footer { background: #fafafa; border-top: 1px solid #f3f4f6; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-hint { font-size: 13px; color: #9ca3af; }
+  .btn { background: #7B2FBE; color: white; font-size: 14px; font-weight: 600; padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer; }
+  .btn:hover { background: #6a28a3; }
+
+  .divider { width: 920px; border: none; border-top: 2px dashed #e5e7eb; }
+  .label-block { width: 920px; }
+
+  .annotation {
+    background: #fffbeb; border: 1.5px dashed #fbbf24; border-radius: 10px;
+    padding: 10px 14px; font-size: 12px; color: #92400e; margin-top: 6px; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="label-block">
+  <h2>Option A — Comment expands inline in sidebar (recommended)</h2>
+  <p style="font-size:12px;color:#6b7280;margin-top:4px;">Once an employee is placed, clicking their name in the sidebar expands a small comment box. Auto-saves on blur. Doesn't disrupt the grid.</p>
+</div>
+
+<div class="card">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div><span class="title">People Analyzer</span><span class="badge">Q1 2026</span></div>
+    <span class="who">Shane Murphy</span>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-label">Your Team (7)</div>
+
+      <!-- Placed, closed -->
+      <div class="emp placed">
+        <div class="emp-name">✓ Kyle Baker</div>
+        <div class="emp-title">AE · tap to add note</div>
+      </div>
+
+      <!-- Placed, open with comment -->
+      <div class="emp placed-open">
+        <div class="emp-name">✓ Kole Minnoch</div>
+        <div class="emp-title">AE</div>
+        <div class="comment-area">
+          <textarea rows="3" placeholder="Optional note…">Strong Q1 pipeline but needs coaching on discovery calls.</textarea>
+          <div class="hint">auto-saved</div>
+        </div>
+      </div>
+
+      <!-- Selected (being placed) -->
+      <div class="emp selected">
+        <div class="emp-name">Sterling Evans</div>
+        <div class="emp-title">AE</div>
+      </div>
+
+      <!-- Unplaced -->
+      <div class="emp unplaced">
+        <div class="emp-name">Jackson Call</div>
+        <div class="emp-title">AE</div>
+      </div>
+      <div class="emp unplaced">
+        <div class="emp-name">Jesse Thayne</div>
+        <div class="emp-title">AE</div>
+      </div>
+      <div class="emp unplaced">
+        <div class="emp-name">Dallas Williams</div>
+        <div class="emp-title">CSM 2</div>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid-area">
+      <div class="grid-header"><span class="axis-label">↑ Potential</span></div>
+      <div class="grid">
+        <div class="y-label">High</div>
+        <div class="cell c3"><div><div class="cell-label">Future Leader</div><div class="cell-desc">High perf, high potential</div></div><div class="chips"></div></div>
+        <div class="cell c3"><div><div class="cell-label">Star Performer</div></div><div class="chips"></div></div>
+        <div class="cell c2"><div><div class="cell-label">High Potential</div></div><div class="chips"><span class="chip">Kyle Baker</span></div></div>
+
+        <div class="y-label">Mid</div>
+        <div class="cell c5"><div><div class="cell-label">Consistent</div></div><div class="chips"></div></div>
+        <div class="cell c5" style="border:2px solid #7B2FBE; box-shadow:0 0 0 3px #ede9fe;"><div><div class="cell-label">Core Player</div><div class="cell-desc">Place Sterling here?</div></div><div class="chips"></div></div>
+        <div class="cell c6"><div><div class="cell-label">Strong Contributor</div></div><div class="chips"><span class="chip">Kole Minnoch</span></div></div>
+
+        <div class="y-label">Low</div>
+        <div class="cell c7"><div><div class="cell-label">Underperformer</div></div><div class="chips"></div></div>
+        <div class="cell c8"><div><div class="cell-label">Needs Support</div></div><div class="chips"></div></div>
+        <div class="cell c9"><div><div class="cell-label">Developing</div></div><div class="chips"></div></div>
+
+        <div></div>
+        <div class="x-label">Low</div>
+        <div class="x-label">Medium</div>
+        <div class="x-label">High</div>
+      </div>
+      <div style="text-align:center"><span class="axis-label">Performance →</span></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-hint">Sterling Evans selected — click a cell to place</span>
+    <button class="btn" disabled style="background:#e8e0f5;color:#b09cc8;cursor:default">Submit Review</button>
+  </div>
+</div>
+
+<div class="annotation">
+  <strong>How it works:</strong> Once placed (✓), clicking any name in the sidebar expands a small textarea. Optional — managers can ignore it. Collapses when they click elsewhere. Auto-saves on blur (no extra button). Comments visible to you in admin Results view.
+</div>
+
+<hr class="divider" />
+
+<div class="label-block" style="margin-top:8px">
+  <h2>Option B — Comment panel below grid (after placing)</h2>
+  <p style="font-size:12px;color:#6b7280;margin-top:4px;">After placing someone, a panel slides in above the footer prompting for a comment. More visible, but interrupts flow slightly.</p>
+</div>
+
+<div class="card">
+  <div class="topbar">
+    <div><span class="title">People Analyzer</span><span class="badge">Q1 2026</span></div>
+    <span class="who">Shane Murphy</span>
+  </div>
+  <div class="body">
+    <div class="sidebar">
+      <div class="sidebar-label">Your Team (3)</div>
+      <div class="emp placed"><div class="emp-name">✓ Kyle Baker</div><div class="emp-title">AE</div></div>
+      <div class="emp placed"><div class="emp-name">✓ Kole Minnoch</div><div class="emp-title">AE</div></div>
+      <div class="emp unplaced"><div class="emp-name">Sterling Evans</div><div class="emp-title">AE</div></div>
+    </div>
+    <div class="grid-area" style="justify-content:flex-end; gap:0;">
+      <!-- Compact grid placeholder -->
+      <div style="flex:1; background:#fafafa; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#d1d5db; font-size:13px;">9-box grid</div>
+
+      <!-- Comment panel that appears after placing -->
+      <div style="border-top:1px solid #f3f4f6; padding:14px 4px 4px; margin-top:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="font-size:13px; font-weight:600; color:#111827;">Kole Minnoch</span>
+          <span style="font-size:11px; color:#9ca3af;">placed as Strong Contributor · <span style="color:#7B2FBE;cursor:pointer">add a note?</span></span>
+        </div>
+        <textarea rows="2" style="width:100%;font-size:12px;color:#374151;background:white;border:1px solid #d1d5db;border-radius:6px;padding:7px 10px;resize:none;outline:none;font-family:inherit;" placeholder="Optional note about Kole…"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span class="footer-hint">2 of 3 placed</span>
+    <button class="btn" disabled style="background:#e8e0f5;color:#b09cc8;cursor:default">Submit Review</button>
+  </div>
+</div>
+
+<div class="annotation">
+  <strong>How it works:</strong> After placing each person, a prompt appears at the bottom of the grid area with their name + cell they were placed in. The comment is contextual and timely, but requires managers to scroll down to see it on smaller screens.
+</div>
+
+</body>
+</html>

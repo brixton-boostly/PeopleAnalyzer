@@ -33,6 +33,22 @@ export async function createRetroMagicLink(
   cycleId: string
 ): Promise<string> {
   const supabase = createClient()
+  const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000'
+
+  // Return existing valid token if one exists
+  const { data: existing } = await supabase
+    .from('magic_links')
+    .select('token, expires_at')
+    .eq('employee_id', employeeId)
+    .eq('cycle_id', cycleId)
+    .eq('type', 'retro')
+    .gt('expires_at', new Date().toISOString())
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (existing) return buildRetroUrl(existing.token, baseUrl)
+
   const token = generateToken()
   // 7-day expiry — employee may return to view their submission
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
@@ -43,7 +59,6 @@ export async function createRetroMagicLink(
 
   if (error) throw new Error(`Failed to create retro magic link: ${error.message}`)
 
-  const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000'
   return buildRetroUrl(token, baseUrl)
 }
 

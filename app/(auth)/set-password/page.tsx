@@ -1,12 +1,14 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 export default function SetPasswordPage() {
   const router = useRouter()
+  const { update } = useSession()
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState('')
@@ -24,6 +26,7 @@ export default function SetPasswordPage() {
     })
     setLoading(false)
     if (!res.ok) { setError('Something went wrong. Try again.'); return }
+    await update({ mustResetPassword: false })
     router.push('/')
   }
 

@@ -10,6 +10,8 @@ interface Props {
   managerComment: string | null
 }
 
+const LABELS = ['Wins', 'Growth', 'Needs']
+
 export function RetroForm({
   token,
   cycleName,
@@ -19,13 +21,11 @@ export function RetroForm({
   managerComment,
 }: Props) {
   const [answers, setAnswers] = useState<string[]>(
-    existingResponses ? existingResponses.map(r => r.answer) : questions.map(() => '')
+    questions.map((_, i) => existingResponses?.[i]?.answer ?? '')
   )
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(!!existingResponses)
   const [error, setError] = useState('')
-
-  const LABELS = ['Wins', 'Growth', 'Needs']
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -34,15 +34,20 @@ export function RetroForm({
       return
     }
     setSubmitting(true)
-    const responses = questions.map((q, i) => ({ question: q, answer: answers[i] }))
-    const res = await fetch('/api/retro/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, responses }),
-    })
-    setSubmitting(false)
-    if (!res.ok) { setError('Something went wrong. Please try again.'); return }
-    setSubmitted(true)
+    try {
+      const responses = questions.map((q, i) => ({ question: q, answer: answers[i] }))
+      const res = await fetch('/api/retro/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, responses }),
+      })
+      if (!res.ok) { setError('Something went wrong. Please try again.'); return }
+      setSubmitted(true)
+    } catch {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -58,7 +63,7 @@ export function RetroForm({
             {questions.map((q, i) => (
               <div key={i} className="bg-white rounded-xl border border-gray-200 p-5">
                 <div className="text-[10px] font-bold tracking-widest text-[#7B2FBE] uppercase mb-2">
-                  0{i + 1} — {LABELS[i]}
+                  0{i + 1} — {LABELS[i] ?? `Q${i + 1}`}
                 </div>
                 <p className="text-[13px] font-semibold text-gray-800 mb-3 leading-snug">{q}</p>
                 <p className="text-[13px] text-gray-600 leading-relaxed whitespace-pre-wrap">{answers[i]}</p>
@@ -91,7 +96,7 @@ export function RetroForm({
           {questions.map((q, i) => (
             <div key={i} className="bg-white rounded-xl border border-gray-200 p-5">
               <div className="text-[10px] font-bold tracking-widest text-[#7B2FBE] uppercase mb-2">
-                0{i + 1} — {LABELS[i]}
+                0{i + 1} — {LABELS[i] ?? `Q${i + 1}`}
               </div>
               <p className="text-[13px] font-semibold text-gray-800 mb-3 leading-snug">{q}</p>
               <textarea

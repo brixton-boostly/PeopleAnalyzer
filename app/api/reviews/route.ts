@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   let query = supabase
     .from('reviews')
     .select(`
-      id, performance, potential, submitted_at,
+      id, performance, potential, comments, submitted_at,
       manager:users!manager_id(id, first_name, last_name),
       direct_report:direct_reports!direct_report_id(id, full_name, job_title)
     `)
@@ -81,6 +81,40 @@ export async function POST(req: NextRequest) {
       },
       { onConflict: 'manager_id,direct_report_id,review_cycle_id' }
     )
+    .select()
+    .single()
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json(data)
+}
+
+// PATCH — manager saves/updates comment on one of their own unsubmitted reviews
+export async function PATCH(req: NextRequest) {
+  const session = await auth()
+  if (!session || session.user.role !== 'manager') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
+  const { reviewId, comments } = await req.json()
+  if (!reviewId) return NextResponse.json({ error: 'reviewId required' }, { status: 400 })
+
+  const supabase = createClient()
+
+  const { data: existing } = await supabase
+    .from('reviews')
+    .select('id, manager_id, submitted_at')
+    .eq('id', reviewId)
+    .single()
+
+  if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  if (existing.manager_id !== session.user.id) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
+  const { data, error } = await supabase
+    .from('reviews')
+    .update({ comments: comments ?? null })
+    .eq('id', reviewId)
     .select()
     .single()
 
