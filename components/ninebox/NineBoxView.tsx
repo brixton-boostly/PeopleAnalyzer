@@ -13,9 +13,10 @@ interface Props {
   initialReviews: Review[]
   submittedAt: string | null
   managerName: string
+  hideBorder?: boolean
 }
 
-export function NineBoxView({ cycleId, cycleName, directReports, initialReviews, submittedAt, managerName }: Props) {
+export function NineBoxView({ cycleId, cycleName, directReports, initialReviews, submittedAt, managerName, hideBorder }: Props) {
   const [reviews, setReviews] = useState<Review[]>(initialReviews)
   const [selected, setSelected] = useState<DirectReport | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -128,7 +129,7 @@ export function NineBoxView({ cycleId, cycleName, directReports, initialReviews,
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden max-w-[920px] mx-auto">
+    <div className={hideBorder ? 'overflow-hidden' : 'bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden max-w-[920px] mx-auto'}>
       {/* Topbar */}
       <div className="bg-white border-b border-gray-100 px-5 py-3 flex justify-between items-center">
         <div className="flex items-center gap-2.5">
