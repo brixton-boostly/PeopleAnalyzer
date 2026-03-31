@@ -53,22 +53,24 @@ export default async function ResultsPage({
 
   const submittedRetros = (retrosRes.data ?? []).filter((r: any) => r.submitted_at).length
 
-  const rows = (reviewsRes.data ?? []).map((r: any) => ({
-    reviewId: r.id,
-    employeeId: r.direct_report.id,
-    managerName: `${r.manager.first_name} ${r.manager.last_name}`,
-    employeeName: r.direct_report.full_name,
-    jobTitle: r.direct_report.job_title,
-    performance: r.performance,
-    potential: r.potential,
-    comments: r.comments ?? null,
-    submittedAt: r.submitted_at,
-  }))
+  const rows = (reviewsRes.data ?? [])
+    .filter((r: any) => r.direct_report && r.manager)
+    .map((r: any) => ({
+      reviewId: r.id,
+      employeeId: r.direct_report.id,
+      managerName: `${r.manager.first_name} ${r.manager.last_name}`,
+      employeeName: r.direct_report.full_name,
+      jobTitle: r.direct_report.job_title,
+      performance: r.performance,
+      potential: r.potential,
+      comments: r.comments ?? null,
+      submittedAt: r.submitted_at,
+    }))
 
   const retros = (retrosRes.data ?? []).map((r: any) => ({
     id: r.id,
     employeeId: r.employee_id,
-    responses: r.responses ?? [],
+    responses: Array.isArray(r.responses) ? r.responses : [],
     submittedAt: r.submitted_at,
     managerComment: r.manager_comment ?? null,
   }))
