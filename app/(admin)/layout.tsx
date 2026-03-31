@@ -10,7 +10,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const supabase = createClient()
   const { data: cycles } = await supabase
     .from('review_cycles')
-    .select('id, name, status, created_by, created_at')
+    .select('id, name, status, retro_status, retro_questions, created_by, created_at')
     .order('created_at', { ascending: false })
 
   return <AdminShell cycles={cycles ?? []}>{children}</AdminShell>
