@@ -31,6 +31,7 @@ export interface ReviewCycle {
   status: CycleStatus
   retro_status: RetroStatus
   retro_questions: string[]
+  retro_participant_ids?: string[] | null
   created_by: string
   created_at: string
 }
