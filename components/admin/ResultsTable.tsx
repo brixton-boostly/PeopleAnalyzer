@@ -45,6 +45,7 @@ export function ResultsTable({
 }: Props) {
   const [filterManager, setFilterManager] = useState('')
   const [filterCell, setFilterCell] = useState('')
+  const [search, setSearch] = useState('')
   const [view, setView] = useState<'list' | 'ninebox'>('list')
   const [tooltip, setTooltip] = useState<string | null>(null)
   const [selectedRetroEmployeeId, setSelectedRetroEmployeeId] = useState<string | null>(null)
@@ -57,6 +58,10 @@ export function ResultsTable({
     if (filterCell) {
       const cell = NINE_BOX_CELLS.find(c => c.label === filterCell)
       if (cell && (r.performance !== cell.performance || r.potential !== cell.potential)) return false
+    }
+    if (search) {
+      const q = search.toLowerCase()
+      return r.employeeName.toLowerCase().includes(q) || r.managerName.toLowerCase().includes(q) || (r.jobTitle ?? '').toLowerCase().includes(q)
     }
     return true
   })
@@ -121,6 +126,13 @@ export function ResultsTable({
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
         <div className="flex gap-3">
+          <input
+            type="text"
+            placeholder="Search employees…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 placeholder-gray-300 focus:outline-none focus:border-[#a78bfa] focus:ring-2 focus:ring-[#ede9fe] w-52"
+          />
           <select
             value={filterManager}
             onChange={e => setFilterManager(e.target.value)}

@@ -37,14 +37,20 @@ export function AssignmentsView({
   const [launching, setLaunching] = useState(false)
   const [launched, setLaunched] = useState(false)
   const [filterManager, setFilterManager] = useState('')
+  const [search, setSearch] = useState('')
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
   const submittedRetros = employees.filter(e => e.retroSubmittedAt).length
   const uniqueManagers = [...new Set(employees.map(e => e.managerName))].sort()
 
-  const filtered = filterManager
-    ? employees.filter(e => e.managerName === filterManager)
-    : employees
+  const filtered = employees.filter(e => {
+    if (filterManager && e.managerName !== filterManager) return false
+    if (search) {
+      const q = search.toLowerCase()
+      return e.employeeName.toLowerCase().includes(q) || e.managerName.toLowerCase().includes(q) || (e.jobTitle ?? '').toLowerCase().includes(q)
+    }
+    return true
+  })
 
   async function launchRetro() {
     setLaunching(true)
@@ -144,6 +150,13 @@ export function AssignmentsView({
 
       {/* Filter + table */}
       <div className="flex items-center gap-3 mb-3">
+        <input
+          type="text"
+          placeholder="Search employees…"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 placeholder-gray-300 focus:outline-none focus:border-[#a78bfa] focus:ring-2 focus:ring-[#ede9fe] w-52"
+        />
         <select
           value={filterManager}
           onChange={e => setFilterManager(e.target.value)}
