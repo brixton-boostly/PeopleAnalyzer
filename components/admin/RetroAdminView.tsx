@@ -59,6 +59,7 @@ export function RetroAdminView({
       : allEmployees.map(e => e.id)
   )
   const [selectedIds, setSelectedIds] = useState<Set<string>>(defaultSelectedIds)
+  const [employeeSearch, setEmployeeSearch] = useState('')
   const [launching, setLaunching] = useState(false)
   const [launchError, setLaunchError] = useState<string | null>(null)
   const [unlocking, setUnlocking] = useState(false)
@@ -292,6 +293,13 @@ export function RetroAdminView({
                 </div>
               )}
             </div>
+            <input
+              type="text"
+              placeholder="Search employees…"
+              value={employeeSearch}
+              onChange={e => setEmployeeSearch(e.target.value)}
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-[12px] text-gray-700 placeholder-gray-300 focus:outline-none focus:border-[#a78bfa] focus:ring-2 focus:ring-[#ede9fe] mb-3"
+            />
             <table className="w-full text-[12px]">
               <thead>
                 <tr className="border-b border-gray-100">
@@ -301,7 +309,10 @@ export function RetroAdminView({
                 </tr>
               </thead>
               <tbody>
-                {allEmployees.map(emp => {
+                {allEmployees.filter(emp => {
+                  const q = employeeSearch.toLowerCase()
+                  return !q || emp.full_name.toLowerCase().includes(q) || emp.manager_name.toLowerCase().includes(q) || (emp.job_title ?? '').toLowerCase().includes(q)
+                }).map(emp => {
                   const checked = selectedIds.has(emp.id)
                   const noSlack = !emp.slack_user_id
                   return (
@@ -377,7 +388,15 @@ export function RetroAdminView({
           </div>
 
           {/* Response table */}
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden max-w-3xl">
+          <div className="max-w-3xl">
+            <input
+              type="text"
+              placeholder="Search employees…"
+              value={employeeSearch}
+              onChange={e => setEmployeeSearch(e.target.value)}
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-[12px] text-gray-700 placeholder-gray-300 focus:outline-none focus:border-[#a78bfa] focus:ring-2 focus:ring-[#ede9fe] mb-3"
+            />
+          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
             <table className="w-full text-[12px]">
               <thead>
                 <tr className="border-b border-gray-100">
@@ -388,7 +407,10 @@ export function RetroAdminView({
                 </tr>
               </thead>
               <tbody>
-                {participantEmployees.map(emp => {
+                {participantEmployees.filter(emp => {
+                  const q = employeeSearch.toLowerCase()
+                  return !q || emp.full_name.toLowerCase().includes(q) || emp.manager_name.toLowerCase().includes(q) || (emp.job_title ?? '').toLowerCase().includes(q)
+                }).map(emp => {
                   const retro = retroMap.get(emp.id)
                   const isSubmitted = !!retro?.submitted_at
                   return (
@@ -427,6 +449,7 @@ export function RetroAdminView({
                 })}
               </tbody>
             </table>
+          </div>
           </div>
         </div>
       )}
