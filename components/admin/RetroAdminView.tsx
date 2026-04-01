@@ -68,6 +68,8 @@ export function RetroAdminView({
   const [selectedRetro, setSelectedRetro] = useState<RetroRow | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [copyError, setCopyError] = useState<string | null>(null)
+  const [nudgeState, setNudgeState] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [nudgeSentCount, setNudgeSentCount] = useState(0)
 
   // Derived
   const retroMap = new Map(retros.map(r => [r.employee_id, r]))
@@ -147,6 +149,22 @@ export function RetroAdminView({
       setLaunchError('Network error')
     } finally {
       setLaunching(false)
+    }
+  }
+
+  async function nudgePending() {
+    setNudgeState('sending')
+    try {
+      const res = await fetch('/api/retro/nudge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cycleId }),
+      })
+      const data = await res.json()
+      setNudgeSentCount(data.sent ?? 0)
+      setNudgeState('sent')
+    } catch {
+      setNudgeState('idle')
     }
   }
 
@@ -386,6 +404,27 @@ export function RetroAdminView({
               <p className="text-2xl font-black text-gray-900">{participantEmployees.length - submittedCount}</p>
             </div>
           </div>
+
+          {/* Nudge pending */}
+          {participantEmployees.length - submittedCount > 0 && (
+            <div className="max-w-lg mb-4">
+              <button
+                onClick={nudgePending}
+                disabled={nudgeState !== 'idle'}
+                className={`text-[12px] font-bold rounded-lg px-4 py-2 border transition-colors ${
+                  nudgeState === 'sent'
+                    ? 'text-green-700 bg-green-50 border-green-300'
+                    : 'text-[#7B2FBE] bg-[#f0e8ff] border-[#ddd0f5] hover:bg-[#e5d5fc]'
+                } disabled:opacity-60 disabled:cursor-not-allowed`}
+              >
+                {nudgeState === 'sending'
+                  ? 'Sending…'
+                  : nudgeState === 'sent'
+                  ? `✓ Reminded ${nudgeSentCount}`
+                  : `📨 Remind ${participantEmployees.length - submittedCount} pending`}
+              </button>
+            </div>
+          )}
 
           {/* Response table */}
           <div className="max-w-3xl">

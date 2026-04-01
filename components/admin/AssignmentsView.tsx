@@ -39,6 +39,8 @@ export function AssignmentsView({
   const [filterManager, setFilterManager] = useState('')
   const [search, setSearch] = useState('')
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [nudgeState, setNudgeState] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [nudgeSentCount, setNudgeSentCount] = useState(0)
 
   const submittedRetros = employees.filter(e => e.retroSubmittedAt).length
   const uniqueManagers = [...new Set(employees.map(e => e.managerName))].sort()
@@ -67,6 +69,23 @@ export function AssignmentsView({
       }
     } finally {
       setLaunching(false)
+    }
+  }
+
+  async function nudgePendingManagers() {
+    setNudgeState('sending')
+    try {
+      const res = await fetch('/api/nudge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cycleId, all: true }),
+      })
+      const data = await res.json()
+      const sent = (data.results ?? []).filter((r: { ok: boolean }) => r.ok).length
+      setNudgeSentCount(sent)
+      setNudgeState('sent')
+    } catch {
+      setNudgeState('idle')
     }
   }
 
@@ -112,6 +131,23 @@ export function AssignmentsView({
               style={{ width: totalManagers > 0 ? `${(submittedManagerCount / totalManagers) * 100}%` : '0%' }}
             />
           </div>
+          {totalManagers - submittedManagerCount > 0 && (
+            <button
+              onClick={nudgePendingManagers}
+              disabled={nudgeState !== 'idle'}
+              className={`w-full text-[12px] font-bold rounded-lg px-3 py-1.5 border transition-colors ${
+                nudgeState === 'sent'
+                  ? 'text-green-700 bg-green-50 border-green-300'
+                  : 'text-[#7B2FBE] border-[#7B2FBE] hover:bg-[#f0e8ff]'
+              } disabled:opacity-60 disabled:cursor-not-allowed`}
+            >
+              {nudgeState === 'sending'
+                ? 'Sending…'
+                : nudgeState === 'sent'
+                ? `✓ Reminded ${nudgeSentCount}`
+                : `📨 Remind ${totalManagers - submittedManagerCount} pending`}
+            </button>
+          )}
         </div>
 
         {/* Retro card */}

@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { createClient } from '@/lib/db'
 import { redirect } from 'next/navigation'
 import { CompletionTable } from '@/components/admin/CompletionTable'
+import { SlackSyncButton } from '@/components/admin/SlackSyncButton'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
@@ -69,6 +70,7 @@ export default async function AdminOverviewPage({
           <p className="text-xs text-gray-400 mt-0.5">{statusLabel} · {managers.length} managers</p>
         </div>
         <div className="flex gap-2 items-center">
+          <SlackSyncButton />
           <Link href={`/api/export?cycleId=${cycleId}`}>
             <Button variant="outline" size="sm" className="text-xs">📤 Export CSV</Button>
           </Link>
