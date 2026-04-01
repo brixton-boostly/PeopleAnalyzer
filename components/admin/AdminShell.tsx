@@ -55,6 +55,7 @@ export function AdminShell({ cycles, children }: Props) {
               {navItem(`/admin/${activeCycleId}`, '📊', 'Overview', true)}
               {navItem(`/admin/${activeCycleId}/assignments`, '👥', 'Assignments')}
               {navItem(`/admin/${activeCycleId}/results`, '📋', 'Results')}
+              {navItem(`/admin/${activeCycleId}/retro`, '🔁', 'Retro')}
             </div>
           )}
 
