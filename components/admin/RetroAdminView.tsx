@@ -61,6 +61,7 @@ export function RetroAdminView({
   const [selectedIds, setSelectedIds] = useState<Set<string>>(defaultSelectedIds)
   const [launching, setLaunching] = useState(false)
   const [launchError, setLaunchError] = useState<string | null>(null)
+  const [unlocking, setUnlocking] = useState(false)
 
   // ── Responses tab state ──────────────────────────────────────
   const [selectedRetro, setSelectedRetro] = useState<RetroRow | null>(null)
@@ -110,6 +111,20 @@ export function RetroAdminView({
 
   function clearAll() {
     setSelectedIds(new Set())
+  }
+
+  async function unlockSetup() {
+    setUnlocking(true)
+    try {
+      const res = await fetch(`/api/cycles/${cycleId}/retro-status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ retro_status: 'draft' }),
+      })
+      if (res.ok) router.refresh()
+    } finally {
+      setUnlocking(false)
+    }
   }
 
   async function launchRetro() {
@@ -193,8 +208,15 @@ export function RetroAdminView({
       {tab === 'setup' && (
         <div className="max-w-2xl">
           {retroStatus !== 'draft' && (
-            <div className="mb-5 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-[13px] text-amber-700">
-              Retro has already been launched. Setup is locked.
+            <div className="mb-5 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-center justify-between">
+              <span className="text-[13px] text-amber-700">Retro has been launched. Setup is locked.</span>
+              <button
+                onClick={unlockSetup}
+                disabled={unlocking}
+                className="text-[12px] font-semibold text-amber-700 border border-amber-300 rounded-lg px-3 py-1.5 hover:bg-amber-100 disabled:opacity-50 transition-colors ml-4 flex-shrink-0"
+              >
+                {unlocking ? 'Unlocking…' : 'Unlock Setup'}
+              </button>
             </div>
           )}
 
